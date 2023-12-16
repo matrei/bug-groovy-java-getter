@@ -62,6 +62,7 @@ static void main(String[] args) {
             def propertyName = association.name
             println "to-one -> $propertyName"
         } else if ((association instanceof OneToMany) || (association instanceof ManyToMany)) {
+            def workaround = association.getName() // <-- this is a workaround
             // This line compiles in 3.0.19 but not in 3.0.20-SNAPSHOT
             def propertyName = association.name
             println "to-many -> $propertyName"
