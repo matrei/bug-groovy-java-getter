@@ -31,34 +31,14 @@ abstract class ManyToMany<T extends Property> extends ToMany<T> {
 }
 
 @CompileStatic
-abstract class ManyToOne<T extends Property> extends ToOne<T> {
-    ManyToOne(String name) { super(name) }
-}
-
-@CompileStatic
-abstract class MappingFactory<T extends Property> {
-    ToOne createOneToOne(String name) {
-        return new OneToOne<T>(name) {}
-    }
-    ToMany createOneToMany(String name) {
-        return new OneToMany<T>(name) {}
-    }
-}
-
-@CompileStatic
-class DefaultMappingFactory<T extends Property> extends MappingFactory<T> {}
-
-@CompileStatic
 static void main(String[] args) {
-    def mappingFactory = new DefaultMappingFactory<Attribute>()
-    def oneToOne = mappingFactory.createOneToOne('foo')
-    def oneToMany = mappingFactory.createOneToMany('bar')
-    def manyToMany = mappingFactory.createOneToMany('baz')
-    def associations = [oneToOne, oneToMany, manyToMany] as List<Association>
 
-    for (association in associations) {
+    def oneToOne = new OneToOne<Attribute>('foo') {}
+    def oneToMany = new OneToMany<Attribute>('bar') {}
+
+    for (association in [oneToOne, oneToMany]) {
         if (association instanceof ToOne) {
-            // This line compile fine
+            // This line compiles fine
             def propertyName = association.name
             println "to-one -> $propertyName"
         } else if ((association instanceof OneToMany) || (association instanceof ManyToMany)) {
